@@ -12,6 +12,7 @@ RUN python -m venv venv
 #Adding source code
 COPY bootstrap.sh requirements.txt ./
 COPY src ./src
+COPY data ./data
 
 #Installing packages
 RUN pip install -r requirements.txt
