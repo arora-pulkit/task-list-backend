@@ -19,6 +19,13 @@ def write_task_list_file(task_list):
     with data_file.open("w") as file:
         json.dump(task_list, file, indent=4)
 
+def delete_task_by_id(id):
+    task_list = read_task_list_file_contents()
+    print(task_list)
+    modified_task_list = list(filter(lambda x: x['id'] != id, task_list))
+    print(modified_task_list)
+    write_task_list_file(modified_task_list)
+
 def delete_all_tasks():
     with data_file.open("w") as file:
         pass

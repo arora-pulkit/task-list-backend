@@ -1,19 +1,23 @@
 from flask import Flask, jsonify, request
 from dao import *
-
+from flask_cors import CORS
+import time
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/tasks', methods=['GET'])
 def get_tasks():
   task_list = read_task_list_file_contents()
-  return jsonify(task_list)
+  response = jsonify(task_list)
+  return response
 
 @app.route('/task', methods=['POST'])
 def add_task():
   current_task_list = read_task_list_file_contents()
   new_task = request.get_json()
-  new_task.update({"id": len(current_task_list) + 1})
+  print("request json : "  + str(new_task))
+  new_task.update({"id": str(time.time())})
   current_task_list.append(new_task)
   write_task_list_file(current_task_list)
   return "Success", 200
@@ -21,4 +25,10 @@ def add_task():
 @app.route('/tasks', methods=['DELETE'])
 def delete_tasks():
   delete_all_tasks()
+  return "Success", 200
+
+@app.route('/task', methods=['DELETE'])
+def delete_task():
+  id = request.args.get("id")
+  delete_task_by_id(id)
   return "Success", 200
