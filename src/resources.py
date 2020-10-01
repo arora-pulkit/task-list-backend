@@ -17,10 +17,11 @@ def add_task():
   current_task_list = read_task_list_file_contents()
   new_task = request.get_json()
   print("request json : "  + str(new_task))
-  new_task.update({"id": str(time.time())})
+  id = str(time.time())
+  new_task.update({"id": id})
   current_task_list.append(new_task)
   write_task_list_file(current_task_list)
-  return "Success", 200
+  return id, 200
 
 @app.route('/tasks', methods=['DELETE'])
 def delete_tasks():
